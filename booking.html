@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            justify-content: space-between;
+        }
+        
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            
+            
+        }
+        
+        .logo .crown {
+            color: #FFD700;
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        nav a{
+            margin-left: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            
+           
+            
+        }
+        nav a:hover {
+            color: #850be3;
+        }
+
+        .back-button {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 200px;
+            background-color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .map-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .welcome-text {
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            padding: 0 20px 20px;
+            color: #666;
+        }
+        
+        .location-inputs {
+            padding: 0 20px;
+        }
+        
+        .location-input {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .location-input-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .green {
+            background-color: #4CAF50;
+        }
+        
+        .red {
+            background-color: #F44336;
+        }
+        
+        .location-input input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .services-section {
+            padding: 20px;
+        }
+        
+        .services-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .service-icon img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        
+        .service-name {
+            font-size: 14px;
+        }
+        
+        .ride-options {
+            padding: 20px;
+        }
+        
+        .ride-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .ride-option-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .ride-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .ride-time {
+            color: #666;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+        
+        .ride-price {
+            font-weight: bold;
+        }
+        
+        .payment-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-icon {
+            margin-right: 10px;
+        }
+        
+        .book-button {
+            background-color: #FFCA28;
+            color: black;
+            padding: 15px 0;
+            text-align: center;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .sidebar-overlay.open {
+            display: block;
+        }
+        
+        .user-info {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-details {
+            flex-grow: 1;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .user-phone {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-menu li .icon {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* View specifics */
+        #homeView, #tripView, #profileView {
+            display: none;
+        }
+        
+        #homeView {
+            display: block;
+        }
+        
+        .car-icon {
+            color: #FFC107;
+        }
+        
+        .bike-icon {
+            color: #4CAF50;
+        }
+        
+        .auto-icon {
+            color: #3F51B5;
+        }
+        
+        .parcel-icon {
+            color: #FF9800;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="menu-icon" id="menuToggle">☰</div>
+        <div class="logo" >
+           
+            🚴‍♂️ VpickU
+        </div>
+        <nav class="nav-btn">
+            <a href="#">Home</a>
+            <a href="#">Help</a>
+        </nav>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="user-info">
+            <div class="user-avatar">
+                <img src="/api/placeholder/50/50" alt="User Avatar">
+            </div>
+            <div class="user-details">
+                <div class="user-name">Dharun</div>
+                <div class="user-phone">+917010970292</div>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><span class="icon">🚗</span> My Rides</li>
+            <li><span class="icon">❓</span> Support</li>
+            <li><span class="icon">📄</span> Terms & Conditions</li>
+            <li><span class="icon">↩️</span> Logout</li>
+        </ul>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Home View -->
+    <div id="homeView">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3911.6173008659434!2d77.8245367755873!3d11.362638588824034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba966a83931ab8b%3A0xe0ced052bd87f1c9!2sKSR%20Institute%20of%20Dental%20Science%20and%20Research%20-%20Basic%20Sciences%20Block!5e0!3m2!1sen!2sin!4v1744897770658!5m2!1sen!2sin" width="1918" height="248" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-controls">🔍</div>
+        </div>
+        
+        <div class="welcome-text">Welcome to VpickU!</div>
+        <div class="subtitle">Book your hassle-free trip with VpickU</div>
+        
+        <div class="location-inputs">
+            <div class="location-input">
+                <div class="location-input-icon green">●</div>
+                <input type="text" placeholder="Pickup" value="Chennai, Tamil Nadu, India">
+            </div>
+            <div class="location-input">
+                <div class="location-input-icon red">●</div>
+                <input type="text" placeholder="Enter drop location here">
+            </div>
+        </div>
+        
+        <div class="services-section">
+            <div class="services-title">Our Services</div>
+            <div class="services-grid">
+                <div class="service-item">
+                    <div class="service-icon bike-icon">🏍️</div>
+                    <div class="service-name">Bike</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon auto-icon">🛺</div>
+                    <div class="service-name">Auto</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon car-icon">🚕</div>
+                    <div class="service-name">Car</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon parcel-icon">📦</div>
+                    <div class="service-name">Parcel</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trip View -->
+    <div id="tripView">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3911.6173008659434!2d77.8245367755873!3d11.362638588824034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba966a83931ab8b%3A0xe0ced052bd87f1c9!2sKSR%20Institute%20of%20Dental%20Science%20and%20Research%20-%20Basic%20Sciences%20Block!5e0!3m2!1sen!2sin!4v1744896865195!5m2!1sen!2sin" width="600" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-controls">🔍</div>
+        </div>
+        
+        <div class="location-inputs">
+            <div class="location-input">
+                <div class="location-input-icon green">●</div>
+                <input type="text" placeholder="Pickup" value="Chennai, Tamil Nadu, India">
+            </div>
+            <div class="location-input">
+                <div class="location-input-icon red">●</div>
+                <input type="text" placeholder="Drop" value="Chennai International Airport (MAA), Airport Rd, Meenambakkam, Chennai, Tamil Nadu 600027, India">
+            </div>
+        </div>
+        
+        <div class="ride-options">
+            <div class="ride-option">
+                <div class="ride-option-left">
+                    <div class="ride-icon">🛺</div>
+                    <div>Auto <span class="ride-time">• 4 mins</span></div>
+                </div>
+                <div class="ride-price">₹ 309</div>
+            </div>
+            <div class="ride-option">
+                <div class="ride-option-left">
+                    <div class="ride-icon">🚕</div>
+                    <div>Cab Economy <span class="ride-time">• 4 mins</span></div>
+                </div>
+                <div class="ride-price">₹ 432</div>
+            </div>
+            <div class="ride-option">
+                <div class="ride-option-left">
+                    <div class="ride-icon">🚗</div>
+                    <div>Cab Premium <span class="ride-time">• 4 mins</span></div>
+                </div>
+                <div class="ride-price">₹ 524</div>
+            </div>
+            <div class="ride-option">
+                <div class="ride-option-left">
+                    <div class="ride-icon">📦</div>
+                    <div>Parcel</div>
+                </div>
+                <div class="ride-price">₹ 252</div>
+            </div>
+        </div>
+        
+        <div class="payment-section">
+            <div class="payment-icon">💵</div>
+            <div>Payment via cash</div>
+        </div>
+        
+        <button class="book-button">Book Bike</button>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        // Toggle sidebar
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('open');
+        });
+        
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('open');
+        });
+        
+        // Switch between views (Home/Trip)
+        function showHomeView() {
+            document.getElementById('homeView').style.display = 'block';
+            document.getElementById('tripView').style.display = 'none';
+        }
+        
+        function showTripView() {
+            document.getElementById('homeView').style.display = 'none';
+            document.getElementById('tripView').style.display = 'block';
+        }
+        
+        // Example: Show trip view when a service is clicked
+        const serviceItems = document.querySelectorAll('.service-item');
+        serviceItems.forEach(item => {
+            item.addEventListener('click', showTripView);
+        });
+        
+        // Example: Show home view when back button is clicked
+        document.querySelector('.back-button')?.addEventListener('click', showHomeView);
+        
+        // For demo purposes, allow toggling between views
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'h') showHomeView();
+            if (e.key === 't') showTripView();
+        });
+    </script>
+</body>
+</html>
